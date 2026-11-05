@@ -1,0 +1,15 @@
+# Android / Gradle build output
+.gradle/
+build/
+app/build/
+local.properties
+.idea/
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+# Signing keys - never commit
+*.keystore
+*.jks
