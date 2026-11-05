@@ -26,7 +26,10 @@ jobs:
             echo "::error::Secret XMB_KEYSTORE_BASE64 is missing - see README.txt (SIGNING)"; exit 1
           fi
           # tolerate spaces / line breaks added when pasting the secret
-          printf '%s' "$XMB_KEYSTORE_BASE64" | tr -d ' \r\n\t' | base64 -d > app/xmb-signing.keystore
+          clean=$(printf '%s' "$XMB_KEYSTORE_BASE64" | tr -d ' \r\n\t')
+          bad=$(printf '%s' "$clean" | tr -d 'A-Za-z0-9+/=' | wc -c)
+          echo "Secret check: ${#clean} characters (expected 3416), $bad characters that are not base64"
+          printf '%s' "$clean" | base64 -d > app/xmb-signing.keystore
           echo "Key restored: $(wc -c < app/xmb-signing.keystore) bytes (expected 2562)"
       - name: Build APK
         env:
