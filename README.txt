@@ -85,6 +85,10 @@ ENABLE THE HOME BUTTON TAKEOVER (after installing V1.1 and opening XMB once)
   ./adb shell settings put secure enabled_accessibility_services com.xmb.launcher/com.xmb.launcher.HomeKeyService
   ./adb shell settings put secure accessibility_enabled 1
   ./adb shell appops set com.xmb.launcher SYSTEM_ALERT_WINDOW allow
+  ./adb shell pm grant com.xmb.launcher android.permission.WRITE_SECURE_SETTINGS
+The last one (V1.3+) lets XMB switch the Home button back on by itself after every reboot
+(Fire OS turns third-party accessibility services off when it restarts) and open itself at boot.
 UNDO (back to Amazon's Home button)
+  ./adb shell pm revoke com.xmb.launcher android.permission.WRITE_SECURE_SETTINGS   (first, or XMB turns it back on)
   ./adb shell settings put secure enabled_accessibility_services ""
   (or ./adb shell settings delete secure enabled_accessibility_services)

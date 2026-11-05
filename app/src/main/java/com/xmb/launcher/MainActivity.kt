@@ -155,6 +155,7 @@ class MainActivity : ComponentActivity() {
     private var cats by mutableStateOf<List<Cat>>(emptyList())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        HomeGuard.ensureEnabled(this)
         Cfg.load(this)
         Idle.last = SystemClock.uptimeMillis()
         val dir = File(filesDir, "media").apply { mkdirs() }

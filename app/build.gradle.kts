@@ -2,7 +2,7 @@ plugins { id("com.android.application"); id("org.jetbrains.kotlin.android") }
 android {
     namespace = "com.xmb.launcher"
     compileSdk = 34
-    defaultConfig { applicationId = "com.xmb.launcher"; minSdk = 25; targetSdk = 28; versionCode = 3; versionName = "1.2" }
+    defaultConfig { applicationId = "com.xmb.launcher"; minSdk = 25; targetSdk = 28; versionCode = 4; versionName = "1.3" }
     // Signing key comes from private GitHub secrets (written to app/xmb-signing.keystore by CI).
     // Never commit the key: without it, local builds fall back to the normal debug key.
     val xmbPass = System.getenv("XMB_KEYSTORE_PASSWORD")
