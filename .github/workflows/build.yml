@@ -25,7 +25,9 @@ jobs:
           if [ -z "$XMB_KEYSTORE_BASE64" ]; then
             echo "::error::Secret XMB_KEYSTORE_BASE64 is missing - see README.txt (SIGNING)"; exit 1
           fi
-          echo "$XMB_KEYSTORE_BASE64" | base64 -d > app/xmb-signing.keystore
+          # tolerate spaces / line breaks added when pasting the secret
+          printf '%s' "$XMB_KEYSTORE_BASE64" | tr -d ' \r\n\t' | base64 -d > app/xmb-signing.keystore
+          echo "Key restored: $(wc -c < app/xmb-signing.keystore) bytes (expected 2562)"
       - name: Build APK
         env:
           XMB_KEYSTORE_PASSWORD: ${{ secrets.XMB_KEYSTORE_PASSWORD }}
