@@ -3,6 +3,20 @@ android {
     namespace = "com.xmb.launcher"
     compileSdk = 34
     defaultConfig { applicationId = "com.xmb.launcher"; minSdk = 25; targetSdk = 28; versionCode = 2; versionName = "1.1" }
+    signingConfigs {
+        // Fixed key committed on purpose: every build (CI or any PC) is signed the same way,
+        // so new versions always install over the old one without uninstalling.
+        create("xmb") {
+            storeFile = file("xmb-signing.keystore")
+            storePassword = "xmblauncher"
+            keyAlias = "xmb"
+            keyPassword = "xmblauncher"
+        }
+    }
+    buildTypes {
+        getByName("debug") { signingConfig = signingConfigs.getByName("xmb") }
+        getByName("release") { signingConfig = signingConfigs.getByName("xmb") }
+    }
     buildFeatures { compose = true }
     composeOptions { kotlinCompilerExtensionVersion = "1.5.14" }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
