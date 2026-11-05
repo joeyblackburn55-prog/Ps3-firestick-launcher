@@ -11,7 +11,25 @@ WHAT IS IN V1
 - XMB Settings: language EN/FR, clock 12/24h, date format, seconds, C/F, feels like, weather city,
   favorite NHL team, menu sound volume, idle mode
 
-BUILD
+DOWNLOAD THE LATEST BUILD (no Android Studio needed)
+GitHub builds the APK automatically on every push to main:
+  https://github.com/joeyblackburn55-prog/ps3-firestick-launcher/releases/download/latest/xmb-launcher.apk
+On the stick: open the Downloader app, enter that URL, install.
+Or from the PC: ./adb install -r "PATH\TO\xmb-launcher.apk"
+
+SIGNING (V1.2+)
+GitHub signs every build with a private key kept in the repo's Actions secrets
+(XMB_KEYSTORE_BASE64 and XMB_KEYSTORE_PASSWORD). The key is NOT in the repo, so nobody else
+can make an "update" that installs over XMB (important: XMB has an accessibility service).
+Keep a backup copy of the key somewhere safe: GitHub secrets cannot be read back.
+One-time switch from V1.1 (signed with your PC's own key):
+  1. back up the media:  .\backup-media.ps1 -StickIp STICK_IP
+  2. ./adb uninstall com.xmb.launcher
+  3. install the new APK, open XMB once, then  .\push-media.ps1 -StickIp STICK_IP
+  4. redo the 3 Home-button commands below (ENABLE THE HOME BUTTON TAKEOVER)
+After that, new versions always install over the old one.
+
+BUILD IT YOURSELF (optional - signed with your PC's debug key, so it won't update the GitHub build)
 1. Android Studio > File > Open > the folder that contains settings.gradle.kts
 2. Gradle JDK must be 17 or 21 (not 25)
 3. Build > Generate App Bundles or APKs > Generate APKs
@@ -21,8 +39,7 @@ CONNECT AND INSTALL (PowerShell in ...\Android\Sdk\platform-tools)
   ./adb connect STICK_IP:5555
   ./adb devices
   ./adb install -r "PATH\TO\app-debug.apk"
-If you get INSTALL_FAILED_UPDATE_INCOMPATIBLE the app was signed on another computer:
-  back up the media files first (see below), then ./adb uninstall com.xmb.launcher and install again.
+INSTALL_FAILED_UPDATE_INCOMPATIBLE = the installed XMB was signed by a different key (see SIGNING above).
 
 FILES THAT LIVE ON THE STICK (kept in the repo under media/, see media/README.md)  ->  files/media inside the app
   intro.mp4   intro video (plays at start, fades into the menu)
